@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   StatusBar,
+  Animated,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
@@ -45,7 +46,24 @@ const DetailsScreen = ({ route }: Props) => {
   const isPositive = coin.price_change_percentage_24h >= 0;
   const changeColor = isPositive ? Colors.positive : Colors.negative;
 
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
   const handleToggleFavorite = useCallback(() => {
+    Animated.sequence([
+      Animated.spring(scaleAnim, {
+        toValue: 1.4,
+        useNativeDriver: true,
+        speed: 50,
+        bounciness: 8,
+      }),
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        useNativeDriver: true,
+        speed: 20,
+        bounciness: 12,
+      }),
+    ]).start();
+
     dispatch(toggleFavorite(coin.id));
   }, [dispatch, coin.id]);
 
@@ -75,7 +93,11 @@ const DetailsScreen = ({ route }: Props) => {
           onPress={handleToggleFavorite}
           activeOpacity={0.8}
         >
-          <Text style={styles.favIcon}>{isFavorite ? '★' : '☆'}</Text>
+          <Animated.Text
+            style={[styles.favIcon, { transform: [{ scale: scaleAnim }] }]}
+          >
+            {isFavorite ? '★' : '☆'}
+          </Animated.Text>
         </TouchableOpacity>
       </View>
 
