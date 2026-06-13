@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import {
   View,
-  Image,
   FlatList,
   ActivityIndicator,
   StyleSheet,
@@ -112,7 +111,7 @@ const HomeScreen = ({ navigation }: Props) => {
           />
         }
         ListEmptyComponent={<ErrorState message="Монети не знайдено" />}
-        contentContainerStyle={{ paddingBottom: insets.bottom }}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
         style={styles.list}
       />
     </View>
@@ -132,15 +131,6 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-  },
-  logoContainer: {
-    alignItems: 'center',
-    paddingTop: 16,
-    paddingBottom: 8,
-  },
-  logo: {
-    width: 140,
-    height: 40,
   },
 });
 

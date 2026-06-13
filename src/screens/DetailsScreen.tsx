@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppDispatch, useAppSelector } from '../store';
 import { toggleFavorite } from '../store/coinsSlice';
 import { RootStackParamList } from '../navigation/types';
@@ -48,6 +49,8 @@ const DetailsScreen = ({ route }: Props) => {
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
+  const insets = useSafeAreaInsets();
+
   const handleToggleFavorite = useCallback(() => {
     Animated.sequence([
       Animated.spring(scaleAnim, {
@@ -75,7 +78,11 @@ const DetailsScreen = ({ route }: Props) => {
   );
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+      style={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
       <StatusBar barStyle="light-content" backgroundColor={Colors.background} />
 
       <View style={styles.header}>
